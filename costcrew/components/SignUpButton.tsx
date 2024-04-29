@@ -21,7 +21,7 @@ export default async function SignUpButton() {
     !user && (
       <Link
         href="/signup"
-        className="py-2 px-3 flex rounded-md no-underline bg-emerald-700 hover:bg-emerald-800"
+        className="py-2 px-3 mr-4 flex rounded-md no-underline bg-emerald-700 hover:bg-emerald-800"
       >
         Sign Up
       </Link>
