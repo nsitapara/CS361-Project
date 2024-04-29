@@ -3,6 +3,7 @@ import HomeButton from "@/components/HomeButton";
 import { createClient } from "@/utils/supabase/server";
 import React from "react";
 import SignUpButton from "./SignUpButton";
+import { ModeToggle } from "./ModeToggle";
 
 export default async function Menu() {
   const supabase = createClient();
@@ -18,6 +19,7 @@ export default async function Menu() {
       <div className="w-full max-w-4xl flex items-center justify-end p-3 text-sm">
         <AuthButton />
         <SignUpButton />
+        <ModeToggle />
       </div>
     </nav>
   );
