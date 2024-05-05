@@ -7,63 +7,118 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { MdEdit, MdOutlineDelete } from "react-icons/md";
+import { PiExportBold } from "react-icons/pi";
+
 import PanelToolTip from "./PanelToolTip";
 export default async function ExpenseSummaryPanel() {
-  const invoices = [
+  const data = [
     {
-      groupID: "1",
-      groupName: "FunCrew",
-      members: "Tom123,Nick321,Jason2",
+      expenseID: "20",
+      date: "5/25/2024",
+      name: "Gas",
+      group: "WorkCrew",
+      cost: "50.00",
     },
     {
-      groupID: "2",
-      groupName: "WorkCrew",
-      members: "Tom123,Randy5",
+      expenseID: "19",
+      date: "5/20/2024",
+      name: "Car Wash",
+      group: "FamilyCrew",
+      cost: "40.00",
     },
     {
-      groupID: "3",
-      groupName: "SchoolCrew",
-      members: "Tom123,Nick321,Jason2,Randy5",
+      expenseID: "18",
+      date: "5/15/2024",
+      name: "Target",
+      group: "FamilyCrew",
+      cost: "150.00",
     },
     {
-      groupID: "4",
-      groupName: "FamilyCrew",
-      members: "Tom123,Nick321,Jason2",
+      expenseID: "17",
+      date: "5/10/2024",
+      name: "Pizza",
+      group: "WorkCrew",
+      cost: "25.00",
+    },
+    {
+      expenseID: "16",
+      date: "5/7/2024",
+      name: "California Role",
+      group: "FunCrew",
+      cost: "15.00",
+    },
+    {
+      expenseID: "15",
+      date: "5/3/2024",
+      name: "Concert Tickets",
+      group: "FunCrew",
+      cost: "100.00",
+    },
+    {
+      expenseID: "14",
+      date: "5/1/2024",
+      name: "Gas",
+      group: "FamilyCrew",
+      cost: "60.00",
+    },
+    {
+      expenseID: "13",
+      date: "4/25/2024",
+      name: "Note",
+      group: "SchoolCrew",
+      cost: "100.00",
+    },
+    {
+      expenseID: "12",
+      date: "4/20/2024",
+      name: "Beer",
+      group: "WorkCrew",
+      cost: "8.00",
+    },
+    {
+      expenseID: "11",
+      date: "4/15/2024",
+      name: "Dinner at Italiano",
+      group: "FunCrew",
+      cost: "50.00",
     },
   ];
   return (
     <div>
-      <h2 className="place-items-center place-content-center text-emerald-700 text-xl flex ">
-        Group Management Panel
-        <PanelToolTip
-          message={
-            "This panel allows you quickly edit group details and delete groups"
-          }
-        />
-      </h2>
+      <div className="flex justify-between">
+        <div className="pl-[40%]">
+          <h2 className="place-items-center text-center place-content-center text-emerald-700 text-xl flex ">
+            Expense Panel
+            <PanelToolTip
+              message={
+                "This panel allows you to see a summary of your expenses across all the groups"
+              }
+            />
+          </h2>
+        </div>
+        <div className="flex place-items-center pr-5">
+          Export
+          <PiExportBold size={25} />
+        </div>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Group ID</TableHead>
+            <TableHead className="w-[120px]">Expense ID</TableHead>
+            <TableHead>Date</TableHead>
+            <TableHead>Expense Name</TableHead>
             <TableHead>Group Name</TableHead>
-            <TableHead>Members</TableHead>
-            <TableHead>Edit</TableHead>
-            <TableHead className="text-right">Delete</TableHead>
+            <TableHead>Your Cost</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {invoices.map((invoice) => (
-            <TableRow key={invoice.groupID}>
-              <TableCell className="font-medium">{invoice.groupID}</TableCell>
-              <TableCell>{invoice.groupName}</TableCell>
-              <TableCell>{invoice.members}</TableCell>
-              <TableCell>
-                <MdEdit size={24} />
-              </TableCell>
-              <TableCell className="text-right">
-                <MdOutlineDelete size={24} color={"red"} />
-              </TableCell>
+          {data.map((record) => (
+            <TableRow key={record.expenseID}>
+              <TableCell>{record.expenseID}</TableCell>
+              <TableCell className="font-medium">{record.date}</TableCell>
+              <TableCell>{record.name}</TableCell>
+              <TableCell>{record.group}</TableCell>
+              <TableCell>{record.cost}</TableCell>
             </TableRow>
           ))}
         </TableBody>

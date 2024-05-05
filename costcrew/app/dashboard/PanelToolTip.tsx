@@ -13,15 +13,17 @@ interface PanelToolTipProps {
 
 export default async function PanelToolTip({ message }: PanelToolTipProps) {
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <FaInfoCircle size={15} />
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>{message}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <div className="pl-2">
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <FaInfoCircle size={15} />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{message}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
   );
 }
