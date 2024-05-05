@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
-export default async function Dashboard() {
+export default async function Expenses() {
   const supabase = createClient();
 
   const {
@@ -14,7 +14,7 @@ export default async function Dashboard() {
 
   return (
     <div className="flex flex-1">
-      <h3 className="font-bold text-3xl text-center pt-5">Dashboard</h3>
+      <h3 className="font-bold text-3xl text-center pt-5">Manage Expenses</h3>
     </div>
   );
 }
