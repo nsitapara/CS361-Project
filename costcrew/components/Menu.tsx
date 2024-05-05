@@ -13,7 +13,7 @@ export default async function Menu() {
 
   return (
     <nav className="w-full max-w-4xl flex justify-center border-b border-b-foreground/10 h-16">
-      <div className="flex items-center justify-center pl-">
+      <div className="flex items-center justify-center">
         <HomeButton />
       </div>
       <div className="w-full max-w-4xl flex items-center justify-end p-3 text-sm">
