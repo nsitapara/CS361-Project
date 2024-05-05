@@ -25,14 +25,14 @@ export default async function About() {
           shares, or custom percentages.
         </li>
         <li>
-          Settle Debts Seamlessly: Tired of chasing down friends for money?
+          <b>Settle Debts Seamlessly:</b> Tired of chasing down friends for money?
           CostCrew simplifies the process of settling debts by providing
           easy-to-use payment options directly within the app. Whether it's via
           bank transfer, Venmo, or PayPal, you can settle up with just a few
           taps.
         </li>
         <li>
-          Stay Organized: Keep track of all your shared expenses in one
+          <b>Stay Organized:</b> Keep track of all your shared expenses in one
           convenient place. CostCrew provides detailed summaries and reports, so
           you always know who paid for what and who owes whom.
         </li>
