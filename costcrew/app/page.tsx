@@ -5,6 +5,8 @@ import ConnectSupabaseSteps from "@/components/tutorial/ConnectSupabaseSteps";
 import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
 import Header from "@/components/Header";
 import Menu from "../components/Menu";
+import Link from "next/link";
+import Image from "next/image";
 
 export default async function Index() {
   const canInitSupabaseClient = () => {
@@ -21,12 +23,56 @@ export default async function Index() {
   const isSupabaseConnected = canInitSupabaseClient();
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
+    <div className="flex-1 w-full flex flex-col gap-20 h-max items-center">
       <div className="animate-in flex-1 flex flex-col gap-20 max-w-4xl px-3">
-        <Header />
-        <main>
-          <h2>Next steps</h2>
-        </main>
+        <div className="pt-[20%]">
+          <p className="text-2xl lg:text-2xl mx-auto max-w-xl text-center">
+            <b>CostCrew</b>: Free and Effortless Expense Sharing for Your Crew
+          </p>
+          <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-8" />
+          <p className="text-2xl lg:text-2xl mx-auto max-w-xl text-center">
+            <i>
+              CostCrew is your go-to solution for hassle-free expense sharing
+              within your group. Whether you're splitting bills with roommates,
+              organizing a group trip, or simply sharing costs with friends,
+              CostCrew makes it easy and efficient.
+            </i>
+          </p>
+          <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-8" />
+          <div className="pt-10 flex gap-16 justify-center">
+            <Image
+              src="/images/home/image1.png"
+              alt="CostCrew"
+              width={75}
+              height={75}
+            />
+            <Image
+              src="/images/home/image2.png"
+              alt="CostCrew"
+              width={75}
+              height={75}
+            />
+            <Image
+              src="/images/home/image3.png"
+              alt="CostCrew"
+              width={75}
+              height={75}
+            />
+            <Image
+              src="/images/home/image4.png"
+              alt="CostCrew"
+              width={75}
+              height={75}
+            />
+          </div>
+        </div>
+
+        <Link
+          href="#"
+          className="text-sky-400 no-underline hover:underline text-center"
+        >
+          Click Here to Learn more About CostCrew
+        </Link>
       </div>
     </div>
   );
