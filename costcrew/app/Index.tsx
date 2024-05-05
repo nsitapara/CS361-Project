@@ -1,10 +1,4 @@
-import DeployButton from "../components/HomeButton";
-import AuthButton from "../components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
-import ConnectSupabaseSteps from "@/components/tutorial/ConnectSupabaseSteps";
-import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
-import Header from "@/components/Header";
-import Menu from "../components/Menu";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -38,7 +32,7 @@ export default async function Index() {
           </i>
         </p>
         <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-8" />
-        <div className="flex gap-16 justify-center">
+        <div className="pt-10 flex gap-16 justify-center">
           <Image
             src="/images/home/image1.png"
             alt="CostCrew"
@@ -64,7 +58,7 @@ export default async function Index() {
             height={75}
           />
         </div>
-        <div className="text-center py-10">
+        <div className="text-center pt-20">
           <Link
             href="/about"
             className="text-sky-400 no-underline hover:underline text-lg"
