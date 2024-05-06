@@ -1,7 +1,17 @@
 import { supabase } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
+
+const supabaseClient = createClient();
 
 export async function fetchGroupData() {
-  let { data: groups, error } = await supabase.from("groups").select("*");
+  const {
+    data: { user: current_user },
+  } = await supabaseClient.auth.getUser();
+  const user_id = current_user?.id;
+  let { data: groups, error } = await supabase
+    .from("groups")
+    .select("*")
+    .eq("created_by", user_id);
   if (error) {
     console.error("error fetching groups", error);
   } else {
@@ -21,3 +31,5 @@ export async function fetchExpenseData() {
     return expenses;
   }
 }
+
+export async function fetchGroupsOptions() {}
