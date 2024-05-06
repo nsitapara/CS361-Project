@@ -20,7 +20,7 @@ export default function Login({
     });
 
     if (error) {
-      return redirect("/login?message=Could not authenticate user");
+      return redirect("/login?message=Invalid Credentials - Please Try Again.");
     }
 
     return redirect("/dashboard");

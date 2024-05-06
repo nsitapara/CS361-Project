@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { MdEdit, MdOutlineDelete } from "react-icons/md";
 import PanelToolTip from "./PanelToolTip";
 import PanelSelect from "./PanelSelect";
 export default async function CostSummaryPanel() {
