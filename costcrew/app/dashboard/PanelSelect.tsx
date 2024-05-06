@@ -1,5 +1,5 @@
-import * as React from "react";
-
+"use client";
+import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -10,13 +10,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface PanelToolTipProps {
-  options: string[];
-}
+export default function PanelSelect() {
+  const options = ["FunCrew", "WorkCrew", "SchoolCrew", "FamilyCrew"];
+  const [currentSelection, setCurrentSelection] = useState(options[0]);
+  const handleOptionChange = (option: string) => {
+    if (option !== currentSelection) {
+      setCurrentSelection(option);
+    }
+  };
 
-export default async function PanelSelect({ options }: PanelToolTipProps) {
   return (
-    <Select defaultValue={options[0]}>
+    <Select value={currentSelection} onValueChange={handleOptionChange}>
       <SelectTrigger className="w-[70%]">
         <SelectValue placeholder="Select Cost Group" />
       </SelectTrigger>

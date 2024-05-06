@@ -32,4 +32,23 @@ export async function fetchExpenseData() {
   }
 }
 
-export async function fetchGroupsOptions() {}
+export async function fetchGroupsOptions() {
+  const data = [
+    {
+      member: "Tom123",
+      cost: "$305",
+      percentage: "64.21%",
+    },
+    {
+      member: "Nick321",
+      cost: "$95",
+      percentage: "20.00%",
+    },
+    {
+      member: "Tom123",
+      cost: "$75",
+      percentage: "15.79%",
+    },
+  ];
+  return data;
+}

@@ -7,27 +7,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import PanelToolTip from "./PanelToolTip";
 import PanelSelect from "./PanelSelect";
+import { fetchGroupsOptions } from "./FetchData";
 export default async function CostSummaryPanel() {
-  const data = [
-    {
-      member: "Tom123",
-      cost: "$305",
-      percentage: "64.21%",
-    },
-    {
-      member: "Nick321",
-      cost: "$95",
-      percentage: "20.00%",
-    },
-    {
-      member: "Tom123",
-      cost: "$75",
-      percentage: "15.79%",
-    },
-  ];
+  const data = await fetchGroupsOptions();
+  //   {
+  //     member: "Tom123",
+  //     cost: "$305",
+  //     percentage: "64.21%",
+  //   },
+  //   {
+  //     member: "Nick321",
+  //     cost: "$95",
+  //     percentage: "20.00%",
+  //   },
+  //   {
+  //     member: "Tom123",
+  //     cost: "$75",
+  //     percentage: "15.79%",
+  //   },
+  // ];
   return (
     <div>
       <h2 className="place-items-center place-content-center text-emerald-700 text-xl flex ">
@@ -40,9 +40,7 @@ export default async function CostSummaryPanel() {
       </h2>
       <div className="flex">
         <span className="content-center px-5">Group:</span>
-        <PanelSelect
-          options={["FunCrew", "WorkCrew", "SchoolCrew", "FamilyCrew"]}
-        />
+        <PanelSelect/>
       </div>
       <Table>
         <TableHeader>
