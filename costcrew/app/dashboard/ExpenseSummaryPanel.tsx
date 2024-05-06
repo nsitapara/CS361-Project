@@ -10,79 +10,82 @@ import {
 import { PiExportBold } from "react-icons/pi";
 
 import PanelToolTip from "./PanelToolTip";
+import { fetchExpenseData } from "./FetchData";
+
 export default async function ExpenseSummaryPanel() {
-  const data = [
-    {
-      expenseID: "20",
-      date: "5/25/2024",
-      name: "Gas",
-      group: "WorkCrew",
-      cost: "50.00",
-    },
-    {
-      expenseID: "19",
-      date: "5/20/2024",
-      name: "Car Wash",
-      group: "FamilyCrew",
-      cost: "40.00",
-    },
-    {
-      expenseID: "18",
-      date: "5/15/2024",
-      name: "Target",
-      group: "FamilyCrew",
-      cost: "150.00",
-    },
-    {
-      expenseID: "17",
-      date: "5/10/2024",
-      name: "Pizza",
-      group: "WorkCrew",
-      cost: "25.00",
-    },
-    {
-      expenseID: "16",
-      date: "5/7/2024",
-      name: "California Role",
-      group: "FunCrew",
-      cost: "15.00",
-    },
-    {
-      expenseID: "15",
-      date: "5/3/2024",
-      name: "Concert Tickets",
-      group: "FunCrew",
-      cost: "100.00",
-    },
-    {
-      expenseID: "14",
-      date: "5/1/2024",
-      name: "Gas",
-      group: "FamilyCrew",
-      cost: "60.00",
-    },
-    {
-      expenseID: "13",
-      date: "4/25/2024",
-      name: "Note",
-      group: "SchoolCrew",
-      cost: "100.00",
-    },
-    {
-      expenseID: "12",
-      date: "4/20/2024",
-      name: "Beer",
-      group: "WorkCrew",
-      cost: "8.00",
-    },
-    {
-      expenseID: "11",
-      date: "4/15/2024",
-      name: "Dinner at Italiano",
-      group: "FunCrew",
-      cost: "50.00",
-    },
-  ];
+  const data = await fetchExpenseData();
+  // const data = [
+  //   {
+  //     expenseID: "20",
+  //     date: "5/25/2024",
+  //     name: "Gas",
+  //     group: "WorkCrew",
+  //     cost: "50.00",
+  //   },
+  //   {
+  //     expenseID: "19",
+  //     date: "5/20/2024",
+  //     name: "Car Wash",
+  //     group: "FamilyCrew",
+  //     cost: "40.00",
+  //   },
+  //   {
+  //     expenseID: "18",
+  //     date: "5/15/2024",
+  //     name: "Target",
+  //     group: "FamilyCrew",
+  //     cost: "150.00",
+  //   },
+  //   {
+  //     expenseID: "17",
+  //     date: "5/10/2024",
+  //     name: "Pizza",
+  //     group: "WorkCrew",
+  //     cost: "25.00",
+  //   },
+  //   {
+  //     expenseID: "16",
+  //     date: "5/7/2024",
+  //     name: "California Role",
+  //     group: "FunCrew",
+  //     cost: "15.00",
+  //   },
+  //   {
+  //     expenseID: "15",
+  //     date: "5/3/2024",
+  //     name: "Concert Tickets",
+  //     group: "FunCrew",
+  //     cost: "100.00",
+  //   },
+  //   {
+  //     expenseID: "14",
+  //     date: "5/1/2024",
+  //     name: "Gas",
+  //     group: "FamilyCrew",
+  //     cost: "60.00",
+  //   },
+  //   {
+  //     expenseID: "13",
+  //     date: "4/25/2024",
+  //     name: "Note",
+  //     group: "SchoolCrew",
+  //     cost: "100.00",
+  //   },
+  //   {
+  //     expenseID: "12",
+  //     date: "4/20/2024",
+  //     name: "Beer",
+  //     group: "WorkCrew",
+  //     cost: "8.00",
+  //   },
+  //   {
+  //     expenseID: "11",
+  //     date: "4/15/2024",
+  //     name: "Dinner at Italiano",
+  //     group: "FunCrew",
+  //     cost: "50.00",
+  //   },
+  // ];
   return (
     <div>
       <div className="flex justify-between">
@@ -112,12 +115,12 @@ export default async function ExpenseSummaryPanel() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((record) => (
-            <TableRow key={record.expenseID}>
-              <TableCell>{record.expenseID}</TableCell>
+          {data?.map((record) => (
+            <TableRow key={record.expense_id}>
+              <TableCell>{record.expense_id}</TableCell>
               <TableCell className="font-medium">{record.date}</TableCell>
-              <TableCell>{record.name}</TableCell>
-              <TableCell>{record.group}</TableCell>
+              <TableCell>{record.expense_name}</TableCell>
+              <TableCell>{record.groups?.group_name}</TableCell>
               <TableCell>{record.cost}</TableCell>
             </TableRow>
           ))}
