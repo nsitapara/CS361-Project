@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -10,15 +9,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function PanelSelect() {
-  const options = ["FunCrew", "WorkCrew", "SchoolCrew", "FamilyCrew"];
-  const [currentSelection, setCurrentSelection] = useState(options[0]);
-  const handleOptionChange = (option: string) => {
-    if (option !== currentSelection) {
-      setCurrentSelection(option);
-    }
-  };
+interface PanelSelectProps {
+  currentSelection: string;
+  handleOptionChange: (option: string) => void;
+  options: {
+    group_id: string;
+    group_name: string;
+  }[];
+}
 
+export default function PanelSelect({
+  options,
+  currentSelection,
+  handleOptionChange,
+}: PanelSelectProps) {
   return (
     <Select value={currentSelection} onValueChange={handleOptionChange}>
       <SelectTrigger className="w-[70%]">
@@ -27,9 +31,9 @@ export default function PanelSelect() {
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Cost Group</SelectLabel>
-          {options.map((option) => (
-            <SelectItem key={option} value={option}>
-              {option}
+          {options.map(({ group_id, group_name }) => (
+            <SelectItem key={group_id} value={group_name}>
+              {group_name}
             </SelectItem>
           ))}
         </SelectGroup>

@@ -33,22 +33,23 @@ export async function fetchExpenseData() {
 }
 
 export async function fetchGroupsOptions() {
-  const data = [
-    {
-      member: "Tom123",
-      cost: "$305",
-      percentage: "64.21%",
-    },
-    {
-      member: "Nick321",
-      cost: "$95",
-      percentage: "20.00%",
-    },
-    {
-      member: "Tom123",
-      cost: "$75",
-      percentage: "15.79%",
-    },
-  ];
-  return data;
+  const {
+    data: { user: current_user },
+  } = await supabaseClient.auth.getUser();
+  const user_id = current_user?.id;
+  const user_email = current_user?.email;
+
+  const allGroups = [];
+  const { data: groupsCreated } = await supabase
+    .from("groups")
+    .select("group_id, group_name")
+    .eq("created_by", user_id);
+  console.log(groupsCreated);
+
+  const { data: groupsJoined } = await supabase
+    .from("groups")
+    .select("group_id, group_name")
+    .contains("members", [user_email]);
+  console.log(groupsJoined);
+  return [...groupsCreated, ...groupsJoined];
 }
