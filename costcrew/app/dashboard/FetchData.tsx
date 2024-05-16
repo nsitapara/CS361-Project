@@ -20,10 +20,15 @@ export async function fetchGroupData() {
 }
 
 export async function fetchExpenseData() {
+  const {
+    data: { user: current_user },
+  } = await supabaseClient.auth.getUser();
+  const user_email = current_user?.email;
   let { data: expenses, error } = await supabase
     .from("expenses")
     .select("expense_id,date, expense_name, group, cost, groups(group_name)")
     .order("date", { ascending: false })
+    .contains("split_by", [user_email])
     .limit(10);
   if (error) {
     console.error("error fetching expenses", error);
