@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
+import Link from "next/link";
 
 export default function Login({
   searchParams,
@@ -56,6 +57,12 @@ export default function Login({
         >
           Sign In
         </SubmitButton>
+        <Link
+          href="/signup"
+          className="bg-emerald-700 hover:bg-emerald-800 rounded-md px-4 py-2 text-foreground mb-2 text-center"
+        >
+          Sign Up
+        </Link>
         {searchParams?.message && (
           <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
             {searchParams.message}
