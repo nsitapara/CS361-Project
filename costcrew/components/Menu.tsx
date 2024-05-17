@@ -1,14 +1,14 @@
 import AuthButton from "@/components/AuthButton";
 import HomeButton from "@/components/HomeButton";
 import DashboardButton from "@/components/DashboardButton";
-import { createClient } from "@/utils/supabase/server";
+import { createClientServer } from "@/utils/supabase/server";
 import React from "react";
 import SignUpButton from "./SignUpButton";
 import { ModeToggle } from "./ModeToggle";
 import Link from "next/link";
 
 export default async function Menu() {
-  const supabase = createClient();
+  const supabase = createClientServer();
   const {
     data: { user },
   } = await supabase.auth.getUser();

@@ -1,11 +1,11 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClientServer } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import GroupsPanels from "./GroupsPanel";
 import ExpenseSummaryPanel from "./ExpenseSummaryPanel";
 import CostSummaryPanel from "./CostSummaryPanel";
 
 export default async function Dashboard() {
-  const supabase = createClient();
+  const supabase = createClientServer();
 
   const {
     data: { user },

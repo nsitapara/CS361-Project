@@ -1,4 +1,3 @@
-"use client";
 import {
   Table,
   TableBody,
@@ -61,7 +60,7 @@ export default function PanelData({ options }: PanelDataProps) {
         <PanelSelect
           options={options}
           currentSelection={currentSelection}
-          handleOptionChange={handleOptionChange}
+          handleOptionChange={(option) => setCurrentSelection(option)}
         />
       </div>
       <Table>

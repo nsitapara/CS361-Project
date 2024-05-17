@@ -32,7 +32,7 @@ export default function PanelSelect({
         <SelectGroup>
           <SelectLabel>Cost Group</SelectLabel>
           {options.map(({ group_id, group_name }) => (
-            <SelectItem key={group_id} value={group_name}>
+            <SelectItem key={group_id} value={group_id}>
               {group_name}
             </SelectItem>
           ))}

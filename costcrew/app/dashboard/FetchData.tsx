@@ -1,7 +1,7 @@
 import { supabase } from "@/utils/supabase/client";
-import { createClient } from "@/utils/supabase/server";
+import { createClientServer } from "@/utils/supabase/server";
 
-const supabaseClient = createClient();
+const supabaseClient = createClientServer();
 
 export async function fetchGroupData() {
   const {
@@ -11,7 +11,7 @@ export async function fetchGroupData() {
   let { data: groups, error } = await supabase
     .from("groups")
     .select("*")
-    .eq("created_by", user_id);
+    .eq("created_by", user_id as string);
   if (error) {
     console.error("error fetching groups", error);
   } else {
@@ -37,24 +37,28 @@ export async function fetchExpenseData() {
   }
 }
 
-export async function fetchGroupsOptions() {
-  const {
-    data: { user: current_user },
-  } = await supabaseClient.auth.getUser();
-  const user_id = current_user?.id;
-  const user_email = current_user?.email;
-
-  const allGroups = [];
+export async function fetchGroupsOptions(user_id: string, user_email: string) {
   const { data: groupsCreated } = await supabase
     .from("groups")
     .select("group_id, group_name")
-    .eq("created_by", user_id);
-  console.log(groupsCreated);
+    .eq("created_by", user_id as string);
 
   const { data: groupsJoined } = await supabase
     .from("groups")
     .select("group_id, group_name")
     .contains("members", [user_email]);
-  console.log(groupsJoined);
-  return [...groupsCreated, ...groupsJoined];
+  return [...(groupsCreated ?? []), ...(groupsJoined ?? [])];
+}
+
+export async function fetchExpenseByGroup(group_id: string) {
+  let { data: expenses, error } = await supabase
+    .from("expenses")
+    .select("expense_id,date, expense_name, group, cost, groups(group_name)")
+    .eq("group", group_id);
+
+  if (error) {
+    console.error("error fetching expenses", error);
+  } else {
+    return expenses;
+  }
 }
