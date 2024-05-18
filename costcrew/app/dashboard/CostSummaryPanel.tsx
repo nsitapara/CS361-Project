@@ -60,7 +60,7 @@ export default function CostSummaryPanel() {
         new URLSearchParams({
           user_id: user_id as string,
           user_email: user_email as string,
-        })
+        }),
     );
     const { options } = await response.json();
     setOptions(options);
@@ -74,7 +74,7 @@ export default function CostSummaryPanel() {
   async function fetchExpenseSummary() {
     const response = await fetch(
       "http://localhost:3000/api/expenses?" +
-        new URLSearchParams({ group_id: currentSelection })
+        new URLSearchParams({ group_id: currentSelection }),
     );
     const data = await response.json();
     console.log("Data", data);

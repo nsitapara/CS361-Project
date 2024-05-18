@@ -1,11 +1,7 @@
-import {
-  createServerClient,
-  type CookieOptions,
-  createBrowserClient,
-} from "@supabase/ssr";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-export const createClientServer = () => {
+export const createClient = () => {
   const cookieStore = cookies();
 
   return createServerClient(
@@ -35,6 +31,6 @@ export const createClientServer = () => {
           }
         },
       },
-    }
+    },
   );
 };

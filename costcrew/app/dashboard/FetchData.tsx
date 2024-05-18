@@ -1,7 +1,7 @@
 import { supabase } from "@/utils/supabase/client";
-import { createClientServer } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 
-const supabaseClient = createClientServer();
+const supabaseClient = createClient();
 
 export async function fetchGroupData() {
   const {

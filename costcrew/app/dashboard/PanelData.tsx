@@ -37,7 +37,7 @@ export default function PanelData({ options }: PanelDataProps) {
     },
   ];
   const [currentSelection, setCurrentSelection] = useState(
-    options[0]["group_name"]
+    options[0]["group_name"],
   );
   const handleOptionChange = (option: string) => {
     if (option !== currentSelection) {
