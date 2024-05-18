@@ -1,9 +1,10 @@
 import { supabase } from "@/utils/supabase/client";
 import { createClient } from "@/utils/supabase/server";
 
-const supabaseClient = createClient();
 
 export async function fetchGroupData() {
+  
+const supabaseClient = createClient();
   const {
     data: { user: current_user },
   } = await supabaseClient.auth.getUser();
@@ -20,6 +21,7 @@ export async function fetchGroupData() {
 }
 
 export async function fetchExpenseData() {
+  const supabaseClient = createClient();
   const {
     data: { user: current_user },
   } = await supabaseClient.auth.getUser();
