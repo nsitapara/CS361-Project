@@ -11,7 +11,7 @@ import { fetchGroupData } from "./FetchData";
 import { MdOutlineDelete } from "react-icons/md";
 
 import PanelToolTip from "./PanelToolTip";
-import { EditDialog } from "@/components/EditButton";
+import { EditGroupDialog } from "@/components/EditGroupDialog";
 
 export default async function GroupsPanels() {
   const data = await fetchGroupData();
@@ -42,7 +42,7 @@ export default async function GroupsPanels() {
               <TableCell>{record.group_name}</TableCell>
               <TableCell>{record.members?.join(",")}</TableCell>
               <TableCell>
-                <EditDialog
+                <EditGroupDialog
                   group_id={record.group_id}
                   group_name={record.group_name}
                   group_members={record.members || []}

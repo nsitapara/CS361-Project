@@ -19,7 +19,7 @@ interface EditDialogProps {
   group_members: string[];
 }
 
-export function EditDialog({
+export function EditGroupDialog({
   group_id,
   group_name,
   group_members,
@@ -31,14 +31,14 @@ export function EditDialog({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[800px]">
         <DialogHeader>
-          <DialogTitle>Edit Group {group_name}</DialogTitle>
+          <DialogTitle>Edit Group {group_id}</DialogTitle>
           <DialogDescription>
             Make changes to {group_name} and Click save when you're done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
+            <Label htmlFor="group_name" className="text-right">
               Group Name
             </Label>
             <Input
@@ -47,8 +47,9 @@ export function EditDialog({
               className="col-span-3"
             />
           </div>
+
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
+            <Label htmlFor="members" className="text-right">
               Members
             </Label>
             <Input

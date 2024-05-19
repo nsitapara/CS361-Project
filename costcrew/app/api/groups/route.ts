@@ -14,14 +14,13 @@ export async function GET(request: NextRequest) {
     .eq("created_by", user_id as string);
   const groupsJoined = [];
   if (user_email !== null) {
-    console.log("RUNNING CONDITION", user_email);
     const { data } = await supabase
       .from("groups")
       .select("group_id, group_name")
       .contains("members", [user_email]);
-    console.log("DATA", data);
     groupsJoined.push(data);
   }
+
   return NextResponse.json({
     options: [...(groupsCreated ?? []), ...(groupsJoined ?? [])],
   });

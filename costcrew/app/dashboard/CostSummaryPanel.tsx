@@ -43,9 +43,10 @@ export default function CostSummaryPanel() {
   //     percentage: "15.79%",
   //   },
   // ];
+  const [currentSummaryData, setCurrentSummaryData] = useState<SummaryData>();
+
   const [currentSelection, setCurrentSelection] = useState("");
   const [options, setOptions] = useState<PanelDataProps["options"]>([]);
-  const [currentSummaryData, setCurrentSummaryData] = useState<SummaryData>();
   async function fetchGroups() {
     const supabase = createClientBrowser();
     const {
