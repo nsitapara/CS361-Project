@@ -24,16 +24,16 @@ export default async function Menu() {
             Dashboard
           </Link>
         )}
-        {user && (
-          <Link href="/groups" className="btn-menu">
-            Groups
-          </Link>
-        )}
-        {user && (
-          <Link href="/expenses" className="btn-menu">
-            Expenses
-          </Link>
-        )}
+        {/*{user && (*/}
+        {/*  <Link href="/groups" className="btn-menu">*/}
+        {/*    Groups*/}
+        {/*  </Link>*/}
+        {/*)}*/}
+        {/*{user && (*/}
+        {/*  <Link href="/expenses" className="btn-menu">*/}
+        {/*    Expenses*/}
+        {/*  </Link>*/}
+        {/*)}*/}
         {user && (
           <Link href="/about" className="btn-menu">
             About
