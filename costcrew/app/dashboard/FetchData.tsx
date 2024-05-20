@@ -1,9 +1,12 @@
 import { supabase } from "@/utils/supabase/client";
 import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
 
-export async function fetchGroupData(user_id: string) {
-  "use server";
+export async function fetchGroupData() {
+  const supabaseClient = createClient();
+  const {
+    data: { user: current_user },
+  } = await supabaseClient.auth.getUser();
+  const user_id = current_user?.id;
   let { data: groups, error } = await supabase
     .from("groups")
     .select("*")

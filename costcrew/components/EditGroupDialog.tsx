@@ -26,7 +26,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
-import { revalidateTag } from "next/cache";
+import { useRouter } from "next/navigation";
 
 interface EditDialogProps {
   group_id: number;
@@ -53,7 +53,7 @@ export function EditGroupDialog({
   group_members,
 }: EditDialogProps) {
   const { toast } = useToast();
-
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -86,6 +86,7 @@ export function EditGroupDialog({
       title: `Successfully Updated Group ${group_id} - ${updated_data.group_name}`,
       description: `Members: ${updated_data.members?.join(",")}`,
     });
+    router.refresh();
   }
   return (
     <Dialog>
