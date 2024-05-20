@@ -1,4 +1,3 @@
-import { fetchGroupsOptions } from "@/app/dashboard/FetchData";
 import { supabase } from "@/utils/supabase/client";
 import { NextResponse, NextRequest } from "next/server";
 
@@ -24,4 +23,40 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({
     options: [...(groupsCreated ?? []), ...(groupsJoined ?? [])],
   });
+}
+
+export async function PUT(request: NextRequest) {
+  const body = await request.json();
+  const group_name = body["group_name"];
+  const members = body["group_members"];
+  const members_list = members.split(",");
+
+  const { data, error } = await supabase
+    .from("groups")
+    .update({
+      group_name: group_name,
+      members: members_list,
+    })
+    .eq("group_id", body.group_id)
+    .select();
+  if (error) throw error;
+  return NextResponse.json(data);
+}
+
+export async function DELETE(request: NextRequest) {
+  const body = await request.json();
+  const group_id = body["group_id"];
+
+  const { data, error } = await supabase
+    .from("groups")
+    .delete()
+    .eq("group_id", group_id)
+    .select();
+  if (error) {
+    return NextResponse.json(
+      { error: "Failed to delete item" },
+      { status: 500 },
+    );
+  }
+  return NextResponse.json(data);
 }

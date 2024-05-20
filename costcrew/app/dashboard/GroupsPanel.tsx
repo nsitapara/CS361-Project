@@ -8,13 +8,26 @@ import {
 } from "@/components/ui/table";
 
 import { fetchGroupData } from "./FetchData";
-import { MdOutlineDelete } from "react-icons/md";
 
 import PanelToolTip from "./PanelToolTip";
 import { EditGroupDialog } from "@/components/EditGroupDialog";
+import { DeleteGroupDialog } from "@/components/DeleteGroupDialog";
+import { unstable_cache } from "next/cache";
+import { createClient } from "@/utils/supabase/server";
+
+const getCachedGroupData = unstable_cache(
+  async (user_id) => fetchGroupData(user_id),
+  ["groupData"],
+  { tags: ["groupData"] },
+);
 
 export default async function GroupsPanels() {
-  const data = await fetchGroupData();
+  const supabaseClient = createClient();
+  const {
+    data: { user: current_user },
+  } = await supabaseClient.auth.getUser();
+  const user_id = current_user?.id;
+  const data = await getCachedGroupData(user_id);
   return (
     <div>
       <h2 className="place-items-center place-content-center text-emerald-700 text-xl flex ">
@@ -49,7 +62,10 @@ export default async function GroupsPanels() {
                 />
               </TableCell>
               <TableCell className="text-right">
-                <MdOutlineDelete size={24} color={"red"} />
+                <DeleteGroupDialog
+                  group_id={record.group_id}
+                  group_name={record.group_name}
+                />
               </TableCell>
             </TableRow>
           ))}

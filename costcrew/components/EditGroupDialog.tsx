@@ -8,10 +8,25 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MdEdit } from "react-icons/md";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, useFormState } from "react-hook-form";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useToast } from "@/components/ui/use-toast";
+import { revalidateTag } from "next/cache";
 
 interface EditDialogProps {
   group_id: number;
@@ -19,11 +34,59 @@ interface EditDialogProps {
   group_members: string[];
 }
 
+const formSchema = z.object({
+  group_name: z.string().min(1, "Group Name Missing"),
+  group_members: z
+    .string()
+    .refine(
+      (emailValue) =>
+        emailValue
+          .split(",")
+          .every((item) => z.string().email().safeParse(item).success),
+      "Comma seperated emails",
+    ),
+});
+
 export function EditGroupDialog({
   group_id,
   group_name,
   group_members,
 }: EditDialogProps) {
+  const { toast } = useToast();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      group_name: group_name,
+      group_members: group_members.join(","),
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log("Values on submit", values);
+    const response = await fetch("http://localhost:3000/api/groups", {
+      method: "PUT",
+      body: JSON.stringify({ group_id: group_id, ...values }),
+    });
+
+    if (!response.ok) {
+      const error = response.statusText;
+      toast({
+        variant: "destructive",
+        title: `Error Updating Group:${group_id}`,
+        description: `Error: ${error}`,
+      });
+    }
+
+    const response_json = await response.json();
+    const updated_data = await response_json[0];
+    toast({
+      title: `Successfully Updated Group ${group_id} - ${updated_data.group_name}`,
+      description: `Members: ${updated_data.members?.join(",")}`,
+    });
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -36,32 +99,54 @@ export function EditGroupDialog({
             Make changes to {group_name} and Click save when you're done.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="group_name" className="text-right">
-              Group Name
-            </Label>
-            <Input
-              id="group_name"
-              defaultValue={group_name}
-              className="col-span-3"
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="grid gap-4 py-4"
+          >
+            <FormField
+              control={form.control}
+              name="group_name"
+              render={({ field }) => (
+                <FormItem className="grid grid-cols-4 items-center gap-4">
+                  <FormLabel>
+                    Group Name
+                    <FormMessage />
+                  </FormLabel>
+                  <FormControl>
+                    <Input className="w-[560px]" id="group_name" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
             />
-          </div>
-
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="members" className="text-right">
-              Members
-            </Label>
-            <Input
-              id="members"
-              defaultValue={group_members.join(",")}
-              className="col-span-3"
+            <FormField
+              control={form.control}
+              name="group_members"
+              render={({ field }) => (
+                <FormItem className="grid grid-cols-4 items-center gap-4">
+                  <FormLabel>
+                    Group Members
+                    <FormMessage />
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="w-[560px]"
+                      id="group_members"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
             />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button className="items-center" type="submit">
+                  Save changes
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

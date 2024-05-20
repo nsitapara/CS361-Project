@@ -1,14 +1,9 @@
 import { supabase } from "@/utils/supabase/client";
 import { createClient } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
 
-
-export async function fetchGroupData() {
-  
-const supabaseClient = createClient();
-  const {
-    data: { user: current_user },
-  } = await supabaseClient.auth.getUser();
-  const user_id = current_user?.id;
+export async function fetchGroupData(user_id: string) {
+  "use server";
   let { data: groups, error } = await supabase
     .from("groups")
     .select("*")
@@ -28,7 +23,9 @@ export async function fetchExpenseData() {
   const user_email = current_user?.email;
   let { data: expenses, error } = await supabase
     .from("expenses")
-    .select("expense_id,date, expense_name, group, cost, groups(group_name, group_id)")
+    .select(
+      "expense_id,date, expense_name, group, cost, groups(group_name, group_id)",
+    )
     .order("date", { ascending: false })
     .contains("split_by", [user_email])
     .limit(10);
@@ -40,7 +37,7 @@ export async function fetchExpenseData() {
 }
 
 export async function fetchGroupsOptions() {
-const supabaseClient = createClient();
+  const supabaseClient = createClient();
   const {
     data: { user: current_user },
   } = await supabaseClient.auth.getUser();
