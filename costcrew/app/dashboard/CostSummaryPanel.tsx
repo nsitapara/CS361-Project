@@ -52,7 +52,6 @@ export default function CostSummaryPanel() {
     const {
       data: { user: current_user },
     } = await supabase.auth.getUser();
-    console.log("User data", current_user);
     const user_id = current_user?.id;
     const user_email = current_user?.email;
 
