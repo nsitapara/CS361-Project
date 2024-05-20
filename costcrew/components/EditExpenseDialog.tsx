@@ -12,8 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MdEdit } from "react-icons/md";
-import {useEffect, useState} from "react";
-import {createClientBrowser} from "@/utils/supabase/browser";
+import { useEffect, useState } from "react";
+import { createClientBrowser } from "@/utils/supabase/browser";
 import PanelSelect from "@/app/dashboard/PanelSelect";
 
 interface EditExpenseProps {
@@ -21,22 +21,21 @@ interface EditExpenseProps {
   expense_name: string | null;
   group_name: string;
   group_id: string;
-  cost:number | null;
-   options: {
+  cost: number | null;
+  options: {
     group_id: string;
     group_name: string;
   }[];
 }
 
 export function EditExpenseDialog({
-expense_id,
-    expense_name,
-    group_name,
-    cost,
-    options,
-    group_id
+  expense_id,
+  expense_name,
+  group_name,
+  cost,
+  options,
+  group_id,
 }: EditExpenseProps) {
-  console.log(group_name, options);
   const [currentSelection, setCurrentSelection] = useState(group_id);
   return (
     <Dialog>
@@ -56,30 +55,26 @@ expense_id,
               Expense Name
             </Label>
             <Input
-                id="group_name"
-                defaultValue={expense_name ?? ""}
-                className="col-span-3"
+              id="group_name"
+              defaultValue={expense_name ?? ""}
+              className="col-span-3"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="group_name" className="text-right">
               Group Name
             </Label>
-              <PanelSelect
-                options={options}
-                currentSelection={currentSelection}
-                handleOptionChange={(value) => setCurrentSelection(value)}
+            <PanelSelect
+              options={options}
+              currentSelection={currentSelection}
+              handleOptionChange={(value) => setCurrentSelection(value)}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="cost" className="text-right">
               Cost
             </Label>
-            <Input
-                id="cost"
-                defaultValue={cost ?? ""}
-                className="col-span-3"
-            />
+            <Input id="cost" defaultValue={cost ?? ""} className="col-span-3" />
           </div>
         </div>
         <DialogFooter>

@@ -50,7 +50,7 @@ export async function fetchGroupsOptions() {
   const { data: groupsCreated } = await supabase
     .from("groups")
     .select("group_id, group_name")
-    .order("date", { ascending: false })
+    .order("group_id", { ascending: false })
     .eq("created_by", user_id as string);
 
   const groupsJoined = [];
