@@ -54,6 +54,8 @@ export function EditGroupDialog({
 }: EditDialogProps) {
   const { toast } = useToast();
   const router = useRouter();
+  const [open, setOpen] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,7 +63,6 @@ export function EditGroupDialog({
       group_members: group_members.join(","),
     },
   });
-  const [open, setOpen] = useState(false);
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.

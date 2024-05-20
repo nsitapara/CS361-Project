@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import { MdOutlineDelete } from "react-icons/md";
 import { useToast } from "@/components/ui/use-toast";
-import { revalidateTag } from "next/cache";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface DeleteGroupDialogProps {
   group_id: number;
@@ -24,8 +25,10 @@ export function DeleteGroupDialog({
   group_id,
 }: DeleteGroupDialogProps) {
   const { toast } = useToast();
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+
   async function handleOnClick() {
-    console.log("DELETE", group_id);
     const response = await fetch("http://localhost:3000/api/groups", {
       method: "DELETE",
       body: JSON.stringify({ group_id: group_id }),
@@ -45,9 +48,11 @@ export function DeleteGroupDialog({
     toast({
       title: `Successfully Deleted Group ${group_id} - ${delete_data.group_name}`,
     });
+    setOpen(!open);
+    router.refresh();
   }
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <MdOutlineDelete size={24} color={"red"} />
       </DialogTrigger>
