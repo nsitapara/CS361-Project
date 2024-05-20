@@ -11,7 +11,6 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { MdEdit } from "react-icons/md";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFormState } from "react-hook-form";
@@ -27,6 +26,7 @@ import {
 } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface EditDialogProps {
   group_id: number;
@@ -61,11 +61,10 @@ export function EditGroupDialog({
       group_members: group_members.join(","),
     },
   });
-
+  const [open, setOpen] = useState(false);
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log("Values on submit", values);
     const response = await fetch("http://localhost:3000/api/groups", {
       method: "PUT",
       body: JSON.stringify({ group_id: group_id, ...values }),
@@ -86,10 +85,12 @@ export function EditGroupDialog({
       title: `Successfully Updated Group ${group_id} - ${updated_data.group_name}`,
       description: `Members: ${updated_data.members?.join(",")}`,
     });
+    setOpen(!open);
     router.refresh();
   }
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <MdEdit size={24} />
       </DialogTrigger>
@@ -140,11 +141,11 @@ export function EditGroupDialog({
               )}
             />
             <DialogFooter>
-              <DialogClose asChild>
-                <Button className="items-center" type="submit">
-                  Save changes
-                </Button>
-              </DialogClose>
+              {/*<DialogClose asChild>*/}
+              <Button className="items-center" type="submit">
+                Save changes
+              </Button>
+              {/*</DialogClose>*/}
             </DialogFooter>
           </form>
         </Form>
