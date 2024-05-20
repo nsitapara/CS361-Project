@@ -7,7 +7,8 @@ export async function fetchGroupData(user_id: string) {
   let { data: groups, error } = await supabase
     .from("groups")
     .select("*")
-    .eq("created_by", user_id as string);
+    .eq("created_by", user_id as string)
+    .order("group_id", { ascending: true });
   if (error) {
     console.error("error fetching groups", error);
   } else {
@@ -26,7 +27,7 @@ export async function fetchExpenseData() {
     .select(
       "expense_id,date, expense_name, group, cost, groups(group_name, group_id)",
     )
-    .order("date", { ascending: false })
+    .order("date", { ascending: true })
     .contains("split_by", [user_email])
     .limit(10);
   if (error) {
@@ -46,6 +47,7 @@ export async function fetchGroupsOptions() {
   const { data: groupsCreated } = await supabase
     .from("groups")
     .select("group_id, group_name")
+    .order("date", { ascending: false })
     .eq("created_by", user_id as string);
 
   const groupsJoined = [];
@@ -53,6 +55,7 @@ export async function fetchGroupsOptions() {
     const { data } = await supabase
       .from("groups")
       .select("group_id, group_name")
+      .order("group_id", { ascending: false })
       .contains("members", [user_email]);
     groupsJoined.push(data);
   }
