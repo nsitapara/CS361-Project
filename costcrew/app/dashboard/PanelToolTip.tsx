@@ -11,12 +11,12 @@ interface PanelToolTipProps {
   message: string;
 }
 
-export default async function PanelToolTip({ message }: PanelToolTipProps) {
+export default function PanelToolTip({ message }: PanelToolTipProps) {
   return (
     <div className="pl-2">
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger asChild>
+          <TooltipTrigger>
             <FaInfoCircle size={15} />
           </TooltipTrigger>
           <TooltipContent>

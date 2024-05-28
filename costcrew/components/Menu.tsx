@@ -1,6 +1,4 @@
 import AuthButton from "@/components/AuthButton";
-import HomeButton from "@/components/HomeButton";
-import DashboardButton from "@/components/DashboardButton";
 import { createClient } from "@/utils/supabase/server";
 import React from "react";
 import SignUpButton from "./SignUpButton";

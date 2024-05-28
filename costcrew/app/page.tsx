@@ -1,10 +1,4 @@
-import DeployButton from "../components/HomeButton";
-import AuthButton from "../components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
-import ConnectSupabaseSteps from "@/components/tutorial/ConnectSupabaseSteps";
-import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
-import Header from "@/components/Header";
-import Menu from "../components/Menu";
 import Link from "next/link";
 import Image from "next/image";
 
