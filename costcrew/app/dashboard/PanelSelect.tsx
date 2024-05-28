@@ -1,4 +1,3 @@
-"use client";
 import {
   Select,
   SelectContent,
@@ -30,9 +29,9 @@ export default function PanelSelect({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Cost Group</SelectLabel>
-          {options.map(({ group_id, group_name }) => (
-            <SelectItem key={group_id} value={group_id}>
+          {/*<SelectLabel>Cost Group</SelectLabel>*/}
+          {options.map(({ group_id, group_name }, index) => (
+            <SelectItem key={index} value={group_id}>
               {group_name}
             </SelectItem>
           ))}

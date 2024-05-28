@@ -10,82 +10,24 @@ import {
 import { PiExportBold } from "react-icons/pi";
 
 import PanelToolTip from "./PanelToolTip";
-import { fetchExpenseData } from "./FetchData";
+import { fetchExpenseData, fetchGroupsOptions } from "./FetchData";
+import { EditExpenseDialog } from "@/components/EditExpenseDialog";
+import { MdOutlineDelete } from "react-icons/md";
+
+interface GroupData {
+  group_id: number;
+  group_name: string;
+}
 
 export default async function ExpenseSummaryPanel() {
   const data = await fetchExpenseData();
-  // const data = [
-  //   {
-  //     expenseID: "20",
-  //     date: "5/25/2024",
-  //     name: "Gas",
-  //     group: "WorkCrew",
-  //     cost: "50.00",
-  //   },
-  //   {
-  //     expenseID: "19",
-  //     date: "5/20/2024",
-  //     name: "Car Wash",
-  //     group: "FamilyCrew",
-  //     cost: "40.00",
-  //   },
-  //   {
-  //     expenseID: "18",
-  //     date: "5/15/2024",
-  //     name: "Target",
-  //     group: "FamilyCrew",
-  //     cost: "150.00",
-  //   },
-  //   {
-  //     expenseID: "17",
-  //     date: "5/10/2024",
-  //     name: "Pizza",
-  //     group: "WorkCrew",
-  //     cost: "25.00",
-  //   },
-  //   {
-  //     expenseID: "16",
-  //     date: "5/7/2024",
-  //     name: "California Role",
-  //     group: "FunCrew",
-  //     cost: "15.00",
-  //   },
-  //   {
-  //     expenseID: "15",
-  //     date: "5/3/2024",
-  //     name: "Concert Tickets",
-  //     group: "FunCrew",
-  //     cost: "100.00",
-  //   },
-  //   {
-  //     expenseID: "14",
-  //     date: "5/1/2024",
-  //     name: "Gas",
-  //     group: "FamilyCrew",
-  //     cost: "60.00",
-  //   },
-  //   {
-  //     expenseID: "13",
-  //     date: "4/25/2024",
-  //     name: "Note",
-  //     group: "SchoolCrew",
-  //     cost: "100.00",
-  //   },
-  //   {
-  //     expenseID: "12",
-  //     date: "4/20/2024",
-  //     name: "Beer",
-  //     group: "WorkCrew",
-  //     cost: "8.00",
-  //   },
-  //   {
-  //     expenseID: "11",
-  //     date: "4/15/2024",
-  //     name: "Dinner at Italiano",
-  //     group: "FunCrew",
-  //     cost: "50.00",
-  //   },
-  // ];
+  // @ts-ignore
+  let options: GroupData[] = await fetchGroupsOptions();
+  const string_casted_options = options.map(({ group_id, group_name }) => ({
+    group_id: group_id?.toString(),
+    group_name: group_name,
+  }));
+  console.log("string_casted_options", string_casted_options);
   return (
     <div>
       <div className="flex justify-between">
@@ -112,6 +54,8 @@ export default async function ExpenseSummaryPanel() {
             <TableHead>Expense Name</TableHead>
             <TableHead>Group Name</TableHead>
             <TableHead>Your Cost</TableHead>
+            <TableHead>Edit</TableHead>
+            <TableHead className="text-right">Delete</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -122,6 +66,19 @@ export default async function ExpenseSummaryPanel() {
               <TableCell>{record.expense_name}</TableCell>
               <TableCell>{record.groups?.group_name}</TableCell>
               <TableCell>{record.cost}</TableCell>
+              <TableCell>
+                <EditExpenseDialog
+                  expense_id={record.expense_id}
+                  expense_name={record.expense_name}
+                  group_name={record.groups?.group_name ?? ""}
+                  cost={record.cost}
+                  options={string_casted_options}
+                  group_id={record.groups?.group_id?.toString() ?? ""}
+                />
+              </TableCell>
+              <TableCell className="text-right">
+                <MdOutlineDelete size={24} color={"red"} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

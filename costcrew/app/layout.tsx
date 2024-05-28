@@ -2,10 +2,10 @@ import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import Menu from "@/components/Menu";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "@/components/ModeToggle";
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
@@ -33,6 +33,7 @@ export default function RootLayout({
             <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text">
               &copy; CostCrew
             </footer>
+            <Toaster />
           </ThemeProvider>
         </main>
       </body>

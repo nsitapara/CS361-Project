@@ -43,15 +43,15 @@ export default function CostSummaryPanel() {
   //     percentage: "15.79%",
   //   },
   // ];
+  const [currentSummaryData, setCurrentSummaryData] = useState<SummaryData>();
+
   const [currentSelection, setCurrentSelection] = useState("");
   const [options, setOptions] = useState<PanelDataProps["options"]>([]);
-  const [currentSummaryData, setCurrentSummaryData] = useState<SummaryData>();
   async function fetchGroups() {
     const supabase = createClientBrowser();
     const {
       data: { user: current_user },
     } = await supabase.auth.getUser();
-    console.log("User data", current_user);
     const user_id = current_user?.id;
     const user_email = current_user?.email;
 
