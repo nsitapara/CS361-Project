@@ -92,7 +92,7 @@ export function EditGroupDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <MdEdit size={24} />
+        <MdEdit className={"cursor-pointer"} size={24} />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[800px]">
         <DialogHeader>

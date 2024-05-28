@@ -7,12 +7,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { PiExportBold } from "react-icons/pi";
-
 import PanelToolTip from "./PanelToolTip";
 import { fetchExpenseData, fetchGroupsOptions } from "./FetchData";
 import { EditExpenseDialog } from "@/components/EditExpenseDialog";
 import { MdOutlineDelete } from "react-icons/md";
+import ExportButton from "@/app/dashboard/ExportButton";
+import {ExportDialog} from "@/components/ExportDialog";
 
 interface GroupData {
   group_id: number;
@@ -43,7 +43,7 @@ export default async function ExpenseSummaryPanel() {
         </div>
         <div className="flex place-items-center pr-5">
           Export
-          <PiExportBold size={25} />
+          <ExportDialog />
         </div>
       </div>
       <Table>

@@ -54,7 +54,7 @@ export function DeleteGroupDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <MdOutlineDelete size={24} color={"red"} />
+        <MdOutlineDelete size={24} className={"cursor-pointer"} color={"red"} />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
