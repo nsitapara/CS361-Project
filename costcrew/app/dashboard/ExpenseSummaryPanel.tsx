@@ -13,6 +13,7 @@ import { EditExpenseDialog } from "@/components/EditExpenseDialog";
 import { MdOutlineDelete } from "react-icons/md";
 import ExportButton from "@/app/dashboard/ExportButton";
 import {ExportDialog} from "@/components/ExportDialog";
+import {DeleteExpenseDialog} from "@/components/DeleteExpenseDialog";
 
 interface GroupData {
   group_id: number;
@@ -49,13 +50,13 @@ export default async function ExpenseSummaryPanel() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[120px]">Expense ID</TableHead>
+            <TableHead className="w-[120px] ">Expense ID</TableHead>
             <TableHead>Date</TableHead>
             <TableHead>Expense Name</TableHead>
             <TableHead>Group Name</TableHead>
             <TableHead>Your Cost</TableHead>
             <TableHead>Edit</TableHead>
-            <TableHead className="text-right">Delete</TableHead>
+            <TableHead className={"text-center"}>Delete</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -76,8 +77,11 @@ export default async function ExpenseSummaryPanel() {
                   group_id={record.groups?.group_id?.toString() ?? ""}
                 />
               </TableCell>
-              <TableCell className="text-right">
-                <MdOutlineDelete size={24} color={"red"} />
+              <TableCell className={"flex justify-center"}>
+                <DeleteExpenseDialog
+                  expense_id={record.expense_id}
+                  expense_name={record.expense_name ?? "No Name"}
+                  />
               </TableCell>
             </TableRow>
           ))}

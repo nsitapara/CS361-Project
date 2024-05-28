@@ -48,7 +48,7 @@ export default async function GroupsPanels() {
                   group_members={record.members || []}
                 />
               </TableCell>
-              <TableCell className="text-right">
+              <TableCell>
                 <DeleteGroupDialog
                   group_id={record.group_id}
                   group_name={record.group_name}
