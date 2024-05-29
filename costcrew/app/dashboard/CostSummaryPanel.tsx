@@ -13,6 +13,8 @@ import PanelSelect from "./PanelSelect";
 import { useEffect, useState } from "react";
 import { createClientBrowser } from "@/utils/supabase/browser";
 import { data } from "autoprefixer";
+import {RiUserSharedFill} from "react-icons/ri";
+import {ShareCostSummaryDialog} from "@/components/ShareCostSummaryDialog";
 
 interface PanelDataProps {
   options: {
@@ -26,25 +28,8 @@ interface SummaryData {
   total: string;
 }
 export default function CostSummaryPanel() {
-  // const data = [
-  //   {
-  //     member: "Tom1231",
-  //     cost: "$305",
-  //     percentage: "64.21%",
-  //   },
-  //   {
-  //     member: "Nick321",
-  //     cost: "$95",
-  //     percentage: "20.00%",
-  //   },
-  //   {
-  //     member: "Tom123",
-  //     cost: "$75",
-  //     percentage: "15.79%",
-  //   },
-  // ];
-  const [currentSummaryData, setCurrentSummaryData] = useState<SummaryData>();
 
+  const [currentSummaryData, setCurrentSummaryData] = useState<SummaryData>();
   const [currentSelection, setCurrentSelection] = useState("");
   const [options, setOptions] = useState<PanelDataProps["options"]>([]);
   async function fetchGroups() {
@@ -77,7 +62,6 @@ export default function CostSummaryPanel() {
         new URLSearchParams({ group_id: currentSelection }),
     );
     const data = await response.json();
-    console.log("Data", data);
     setCurrentSummaryData(data);
   }
 
@@ -88,7 +72,6 @@ export default function CostSummaryPanel() {
   }, [currentSelection]);
   const handleOptionChange = (option: string) => {
     if (option !== currentSelection) {
-      console.log("Option changed to", option);
       setCurrentSelection(option);
     }
   };
@@ -133,6 +116,9 @@ export default function CostSummaryPanel() {
               <TableCell colSpan={1}>Total</TableCell>
               <TableCell>${currentSummaryData?.total}</TableCell>
               <TableCell>100%</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={3}><ShareCostSummaryDialog currentSummaryData={currentSummaryData} /></TableCell>
             </TableRow>
           </TableFooter>
         </Table>
