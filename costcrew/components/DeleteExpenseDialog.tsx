@@ -29,7 +29,7 @@ export function DeleteExpenseDialog({
   const [open, setOpen] = useState(false);
 
   async function handleOnClick() {
-    const response = await fetch("http://localhost:3002/api", {
+    const response = await fetch("http://localhost:3003/api", {
       method: "DELETE",
       body: JSON.stringify({ expense_id: expense_id }),
     });

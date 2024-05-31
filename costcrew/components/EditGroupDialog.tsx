@@ -65,7 +65,7 @@ export function EditGroupDialog({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    const response = await fetch("http://localhost:3001/api", {
+    const response = await fetch("http://localhost:3002/api", {
       method: "PUT",
       body: JSON.stringify({ group_id: group_id, ...values }),
     });

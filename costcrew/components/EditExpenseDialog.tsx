@@ -1,86 +1,220 @@
 "use client";
-import { Button } from "@/components/ui/Button";
+import {Button} from "@/components/ui/Button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { MdEdit } from "react-icons/md";
-import { useEffect, useState } from "react";
-import { createClientBrowser } from "@/utils/supabase/browser";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {MdEdit} from "react-icons/md";
+import {useEffect, useState} from "react";
+import {z} from "zod";
 import PanelSelect from "@/app/dashboard/PanelSelect";
+import {useToast} from "@/components/ui/use-toast";
+import {useRouter} from "next/navigation";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 
 interface EditExpenseProps {
-  expense_id: number;
-  expense_name: string | null;
-  group_name: string;
-  group_id: string;
-  cost: number | null;
-  options: {
+    expense_id: number;
+    date: string;
+    total_cost: number | null;
+    expense_name: string | null;
     group_id: string;
-    group_name: string;
-  }[];
+    cost: number | null;
+    options: {
+        group_id: string;
+        group_name: string;
+    }[];
 }
 
+const formSchema = z.object(
+    {
+        expense_name: z.string().min(1, "Expense Name Missing"),
+        group_id: z.string().min(1, "Group Name Missing"),
+        cost: z.number().min(1, "Cost Missing"),
+        date: z.string().min(1, "Date Missing"),
+        total_cost: z.number().min(1, "Total Cost Missing"),
+    }
+)
+
+
 export function EditExpenseDialog({
-  expense_id,
-  expense_name,
-  group_name,
-  cost,
-  options,
-  group_id,
-}: EditExpenseProps) {
-  const [currentSelection, setCurrentSelection] = useState(group_id);
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <MdEdit className={"cursor-pointer"} size={24} />
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px]">
-        <DialogHeader>
-          <DialogTitle>Edit Expense {expense_id}</DialogTitle>
-          <DialogDescription>
-            Make changes to {expense_name} and Click save when you're done.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="expense_name" className="text-right">
-              Expense Name
-            </Label>
-            <Input
-              id="group_name"
-              defaultValue={expense_name ?? ""}
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="group_name" className="text-right">
-              Group Name
-            </Label>
-            <PanelSelect
-              options={options}
-              currentSelection={currentSelection}
-              handleOptionChange={(value) => setCurrentSelection(value)}
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="cost" className="text-right">
-              Cost
-            </Label>
-            <Input id="cost" defaultValue={cost ?? ""} className="col-span-3" />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
+                                      expense_id,
+                                      date,
+                                      expense_name,
+                                      cost,
+                                      total_cost,
+                                      options,
+                                      group_id,
+                                  }: EditExpenseProps) {
+    const [currentSelection, setCurrentSelection] = useState(group_id);
+    const {toast} = useToast();
+    const router = useRouter();
+    const [open, setOpen] = useState(false);
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            expense_name: expense_name ?? "",
+            group_id: group_id ?? "",
+            cost: cost ?? 0,
+            date: date ?? "",
+            total_cost: total_cost ?? 0,
+        },
+    });
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        // Do something with the form values.
+        // ✅ This will be type-safe and validated.
+        console.log(values)
+        const response = await fetch("http://localhost:3003/api", {
+            method: "PUT",
+            body: JSON.stringify(values),
+        });
+
+        if (!response.ok) {
+            const error = response.statusText;
+            toast({
+                variant: "destructive",
+                title: `Error Updating Expense:${expense_name}`,
+                description: `Error: ${error}`,
+            });
+        }
+
+        const response_json = await response.json();
+        const updated_data = await response_json[0];
+        toast({
+            title: `Successfully Updated Expense ${expense_id}`,
+            description: `Expense: ${expense_name}`,
+        });
+        setOpen(!open);
+        router.refresh();
+    }
+
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                <MdEdit className={"cursor-pointer"} size={24}/>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[800px]">
+                <DialogHeader>
+                    <DialogTitle>Edit Expense {expense_id}</DialogTitle>
+                    <DialogDescription>
+                        Make changes to {expense_name} and Click save when you're done.
+                    </DialogDescription>
+                </DialogHeader>
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="grid gap-4 py-4"
+                    >
+                        <FormField
+                            control={form.control}
+                            name="date"
+                            render={({field}) => (
+                                <FormItem className="grid grid-cols-4 items-center gap-4">
+                                    <FormLabel>
+                                        Date
+                                        <FormMessage/>
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            id="date"
+                                            defaultValue={date ?? ""}
+                                            className="col-span-3"
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="expense_name"
+                            render={({field}) => (
+                                <FormItem className="grid grid-cols-4 items-center gap-4">
+                                    <FormLabel>
+                                        Expense Name
+                                        <FormMessage/>
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            id="expense_name"
+                                            defaultValue={expense_name ?? ""}
+                                            className="col-span-3"
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="group_id"
+                            render={({field}) => (
+                                <FormItem className="grid grid-cols-4 items-center gap-4">
+                                    <FormLabel>
+                                        Group Name
+                                        <FormMessage/>
+                                    </FormLabel>
+                                    <FormControl>
+                                        <PanelSelect
+                                            options={options}
+                                            currentSelection={currentSelection}
+                                            handleOptionChange={(value) => setCurrentSelection(value)}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="total_cost"
+                            render={({field}) => (
+                                <FormItem className="grid grid-cols-4 items-center gap-4">
+                                    <FormLabel>
+                                        Total Cost
+                                        <FormMessage/>
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input id="total_cost" defaultValue={total_cost ?? ""} className="col-span-3"/>
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="cost"
+                            render={({field}) => (
+                                <FormItem className="grid grid-cols-4 items-center gap-4">
+                                    <FormLabel>
+                                        Your Cost
+                                        <FormMessage/>
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input id="cost" defaultValue={cost ?? ""} className="col-span-3"/>
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <DialogFooter>
+                            <Button type="submit">Save changes</Button>
+                        </DialogFooter>
+                    </form>
+                </Form>
+            </DialogContent>
+        </Dialog>
+    );
 }

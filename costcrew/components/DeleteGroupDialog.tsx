@@ -29,7 +29,7 @@ export function DeleteGroupDialog({
   const [open, setOpen] = useState(false);
 
   async function handleOnClick() {
-    const response = await fetch("http://localhost:3001/api", {
+    const response = await fetch("http://localhost:3002/api", {
       method: "DELETE",
       body: JSON.stringify({ group_id: group_id }),
     });

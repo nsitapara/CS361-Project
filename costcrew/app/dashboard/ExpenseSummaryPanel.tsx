@@ -70,11 +70,12 @@ export default async function ExpenseSummaryPanel() {
               <TableCell>
                 <EditExpenseDialog
                   expense_id={record.expense_id}
+                  date={record?.date ?? ""}
                   expense_name={record.expense_name}
-                  group_name={record.groups?.group_name ?? ""}
-                  cost={record.cost}
-                  options={string_casted_options}
                   group_id={record.groups?.group_id?.toString() ?? ""}
+                  cost={record.cost}
+                  total_cost={record.total_cost}
+                  options={string_casted_options}
                 />
               </TableCell>
               <TableCell className={"flex justify-center"}>
