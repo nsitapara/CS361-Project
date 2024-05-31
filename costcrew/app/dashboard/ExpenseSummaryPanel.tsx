@@ -28,7 +28,6 @@ export default async function ExpenseSummaryPanel() {
     group_id: group_id?.toString(),
     group_name: group_name,
   }));
-  console.log("string_casted_options", string_casted_options);
   return (
     <div>
       <div className="flex justify-between">
