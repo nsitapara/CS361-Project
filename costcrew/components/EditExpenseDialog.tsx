@@ -35,6 +35,7 @@ interface EditExpenseProps {
     expense_name: string | null;
     group_id: string;
     cost: number | null;
+    split_by: string[] | null;
     options: {
         group_id: string;
         group_name: string;
@@ -45,9 +46,18 @@ const formSchema = z.object(
     {
         expense_name: z.string().min(1, "Expense Name Missing"),
         group_id: z.string().min(1, "Group Name Missing"),
-        cost: z.number().min(1, "Cost Missing"),
+        cost: z.coerce.number().min(1, "Cost Missing"),
         date: z.string().min(1, "Date Missing"),
-        total_cost: z.number().min(1, "Total Cost Missing"),
+        total_cost: z.coerce.number().min(1, "Total Cost Missing"),
+        split_by: z
+            .string()
+            .refine(
+                (emailValue) =>
+                    emailValue
+                        .split(",")
+                        .every((item) => z.string().email().safeParse(item).success),
+                "Comma seperated emails",
+            )
     }
 )
 
@@ -55,11 +65,12 @@ const formSchema = z.object(
 export function EditExpenseDialog({
                                       expense_id,
                                       date,
-                                      expense_name,
-                                      cost,
                                       total_cost,
-                                      options,
+                                      expense_name,
                                       group_id,
+                                      cost,
+                                      split_by,
+                                      options,
                                   }: EditExpenseProps) {
     const [currentSelection, setCurrentSelection] = useState(group_id);
     const {toast} = useToast();
@@ -74,6 +85,7 @@ export function EditExpenseDialog({
             cost: cost ?? 0,
             date: date ?? "",
             total_cost: total_cost ?? 0,
+            split_by: split_by?.join(",") ?? "",
         },
     });
 
@@ -83,7 +95,7 @@ export function EditExpenseDialog({
         console.log(values)
         const response = await fetch("http://localhost:3003/api", {
             method: "PUT",
-            body: JSON.stringify(values),
+            body: JSON.stringify({expense_id, ...values}),
         });
 
         if (!response.ok) {
@@ -136,6 +148,7 @@ export function EditExpenseDialog({
                                             id="date"
                                             defaultValue={date ?? ""}
                                             className="col-span-3"
+                                            {...field}
                                         />
                                     </FormControl>
                                 </FormItem>
@@ -155,6 +168,7 @@ export function EditExpenseDialog({
                                             id="expense_name"
                                             defaultValue={expense_name ?? ""}
                                             className="col-span-3"
+                                            {...field}
                                         />
                                     </FormControl>
                                 </FormItem>
@@ -174,6 +188,7 @@ export function EditExpenseDialog({
                                             options={options}
                                             currentSelection={currentSelection}
                                             handleOptionChange={(value) => setCurrentSelection(value)}
+                                            {...field}
                                         />
                                     </FormControl>
                                 </FormItem>
@@ -189,7 +204,24 @@ export function EditExpenseDialog({
                                         <FormMessage/>
                                     </FormLabel>
                                     <FormControl>
-                                        <Input id="total_cost" defaultValue={total_cost ?? ""} className="col-span-3"/>
+                                        <Input id="total_cost" defaultValue={total_cost ?? ""}
+                                               className="col-span-3" {...field}/>
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="split_by"
+                            render={({field}) => (
+                                <FormItem className="grid grid-cols-4 items-center gap-4">
+                                    <FormLabel>
+                                        Split By
+                                        <FormMessage/>
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input id="split_by" defaultValue={split_by ?? ""}
+                                               className="col-span-3" {...field}/>
                                     </FormControl>
                                 </FormItem>
                             )}
@@ -204,7 +236,7 @@ export function EditExpenseDialog({
                                         <FormMessage/>
                                     </FormLabel>
                                     <FormControl>
-                                        <Input id="cost" defaultValue={cost ?? ""} className="col-span-3"/>
+                                        <Input id="cost" defaultValue={cost ?? ""} className="col-span-3" {...field}/>
                                     </FormControl>
                                 </FormItem>
                             )}

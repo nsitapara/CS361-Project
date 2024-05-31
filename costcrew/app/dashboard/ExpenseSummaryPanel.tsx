@@ -75,6 +75,7 @@ export default async function ExpenseSummaryPanel() {
                   group_id={record.groups?.group_id?.toString() ?? ""}
                   cost={record.cost}
                   total_cost={record.total_cost}
+                  split_by={record.split_by}
                   options={string_casted_options}
                 />
               </TableCell>
