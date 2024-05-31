@@ -85,9 +85,15 @@ currentSummaryData
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    const response = await fetch("http://localhost:3003/api", {
+
+    const body_json = JSON.stringify(values)
+    console.log(body_json)
+    const response = await fetch("http://localhost:3004/api/", {
       method: "POST",
-      body: JSON.stringify({ ...values }),
+        headers: {
+    "Content-Type": "application/json",
+  },
+      body: body_json,
     });
 
     if (!response.ok) {
@@ -100,10 +106,9 @@ currentSummaryData
     }
 
     const response_json = await response.json();
-    const updated_data = await response_json[0];
     toast({
-      title: `Successfully Sent Summary to Group ${2} - ${updated_data.group_name}`,
-      description: `Members: ${updated_data.members?.join(",")}`,
+      title: `Successfully Sent Summary to Group`,
+      description: `Members: ${values.group_members}`,
     });
     setOpen(!open);
     router.refresh();
