@@ -30,7 +30,7 @@ export async function fetchExpenseData() {
     .select(
       "expense_id,date,expense_name, group, total_cost, cost, split_by, groups(group_name, group_id)"
     )
-    .order("date", { ascending: true })
+    .order("date", { ascending: false })
     .contains("split_by", [user_email])
     .limit(10);
   if (error) {

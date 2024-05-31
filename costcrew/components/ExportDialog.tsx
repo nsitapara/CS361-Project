@@ -25,7 +25,7 @@ export function ExportDialog() {
  async function handleExport() {
         const {data:{user}} = await createClientBrowser().auth.getUser()
         const user_email = user?.email
-        const query_url = `http://localhost:3004/export?email=${user_email}`
+        const query_url = `http://localhost:3001/export?email=${user_email}`
         const response = await fetch(query_url, {
             method: "GET"
         });
