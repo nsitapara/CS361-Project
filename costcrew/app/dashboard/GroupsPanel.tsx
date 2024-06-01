@@ -27,7 +27,7 @@ export default async function GroupsPanels() {
                     }
                 />
             </h2>
-                <div className={"flex place-content-end"}>
+                <div className={"flex place-content-start pl-1"}>
                     <AddGroupDialog/>
                 </div>
             </div>

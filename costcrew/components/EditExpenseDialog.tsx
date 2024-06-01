@@ -36,6 +36,7 @@ interface EditExpenseProps {
     group_id: string;
     cost: number | null;
     split_by: string[] | null;
+    paid_by: string | null;
     options: {
         group_id: string;
         group_name: string;
@@ -57,7 +58,8 @@ const formSchema = z.object(
                         .split(",")
                         .every((item) => z.string().email().safeParse(item).success),
                 "Comma seperated emails",
-            )
+            ),
+        paid_by: z.string().email().min(1, "Paid By Missing"),
     }
 )
 
@@ -70,6 +72,7 @@ export function EditExpenseDialog({
                                       group_id,
                                       cost,
                                       split_by,
+                                      paid_by,
                                       options,
                                   }: EditExpenseProps) {
     const [currentSelection, setCurrentSelection] = useState(group_id);
@@ -86,6 +89,7 @@ export function EditExpenseDialog({
             date: date ?? "",
             total_cost: total_cost ?? 0,
             split_by: split_by?.join(",") ?? "",
+            paid_by: paid_by ?? "",
         },
     });
 
@@ -237,6 +241,21 @@ export function EditExpenseDialog({
                                     </FormLabel>
                                     <FormControl>
                                         <Input id="cost" defaultValue={cost ?? ""} className="col-span-3" {...field}/>
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                                                <FormField
+                            control={form.control}
+                            name="paid_by"
+                            render={({field}) => (
+                                <FormItem className="grid grid-cols-4 items-center gap-4">
+                                    <FormLabel>
+                                        Paid By
+                                        <FormMessage/>
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input id="paid_by" defaultValue={paid_by ?? ""} className="col-span-3" {...field}/>
                                     </FormControl>
                                 </FormItem>
                             )}

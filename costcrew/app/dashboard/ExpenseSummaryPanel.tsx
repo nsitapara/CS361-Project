@@ -75,6 +75,7 @@ export default async function ExpenseSummaryPanel() {
                   cost={record.cost}
                   total_cost={record.total_cost}
                   split_by={record.split_by}
+                  paid_by={record.paid_by}
                   options={string_casted_options}
                 />
               </TableCell>

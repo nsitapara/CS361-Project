@@ -28,7 +28,7 @@ export async function fetchExpenseData() {
   let { data: expenses, error } = await supabase
     .from("expenses")
     .select(
-      "expense_id,date,expense_name, group, total_cost, cost, split_by, groups(group_name, group_id)"
+      "expense_id,date,expense_name, group, total_cost, cost, split_by, paid_by ,groups(group_name, group_id)"
     )
     .order("date", { ascending: false })
     .contains("split_by", [user_email])
