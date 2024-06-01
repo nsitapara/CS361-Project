@@ -27,16 +27,9 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
+import {IoAddCircle} from "react-icons/io5";
 
 interface EditExpenseProps {
-    expense_id: number;
-    date: string;
-    total_cost: number | null;
-    expense_name: string | null;
-    group_id: string;
-    cost: number | null;
-    split_by: string[] | null;
-    paid_by: string | null;
     options: {
         group_id: string;
         group_name: string;
@@ -64,18 +57,11 @@ const formSchema = z.object(
 )
 
 
-export function EditExpenseDialog({
-                                      expense_id,
-                                      date,
-                                      total_cost,
-                                      expense_name,
-                                      group_id,
-                                      cost,
-                                      split_by,
-                                      paid_by,
+export function AddExpenseDialog({
+
                                       options,
                                   }: EditExpenseProps) {
-    const [currentSelection, setCurrentSelection] = useState(group_id);
+    const [currentSelection, setCurrentSelection] = useState(options[0].group_id);
     const {toast} = useToast();
     const router = useRouter();
     const [open, setOpen] = useState(false);
@@ -83,13 +69,13 @@ export function EditExpenseDialog({
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            expense_name: expense_name ?? "",
-            group_id: group_id ?? "",
-            cost: cost ?? 0,
-            date: date ?? "",
-            total_cost: total_cost ?? 0,
-            split_by: split_by?.join(",") ?? "",
-            paid_by: paid_by ?? "",
+            expense_name: "",
+            group_id: currentSelection,
+            cost: undefined,
+            date: "",
+            total_cost: undefined,
+            split_by: "",
+            paid_by: "",
         },
     });
 
@@ -98,24 +84,24 @@ export function EditExpenseDialog({
         // ✅ This will be type-safe and validated.
         console.log(values)
         const response = await fetch("http://localhost:3003/api", {
-            method: "PUT",
-            body: JSON.stringify({expense_id, ...values, "group_id":currentSelection}),
+            method: "POST",
+            body: JSON.stringify({...values, "group_id":currentSelection}),
         });
 
         if (!response.ok) {
             const error = response.statusText;
             toast({
                 variant: "destructive",
-                title: `Error Updating Expense:${expense_name}`,
+                title: `Error Adding Expense`,
                 description: `Error: ${error}`,
             });
         }
 
         const response_json = await response.json();
-        const updated_data = await response_json[0];
+        const added_expense = await response_json[0];
         toast({
-            title: `Successfully Updated Expense ${expense_id}`,
-            description: `Expense: ${expense_name}`,
+            title: `Successfully Added Expense ${added_expense.expense_id}`,
+            description: `Expense: ${added_expense.expense_name}`,
         });
         setOpen(!open);
         router.refresh();
@@ -124,13 +110,13 @@ export function EditExpenseDialog({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <MdEdit className={"cursor-pointer"} size={24}/>
+                <Button className={"bg-emerald-700 hover:bg-emerald-800"}> Add Expense<IoAddCircle className={"cursor-pointer "} size={24} /></Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[800px]">
                 <DialogHeader>
-                    <DialogTitle>Edit Expense {expense_id}</DialogTitle>
+                    <DialogTitle>Add Expense</DialogTitle>
                     <DialogDescription>
-                        Make changes to {expense_name} and Click save when you're done.
+                        Create a new Expense for a group.
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -150,7 +136,7 @@ export function EditExpenseDialog({
                                     <FormControl>
                                         <Input
                                             id="date"
-                                            defaultValue={date ?? ""}
+                                            defaultValue={""}
                                             className="col-span-3"
                                             {...field}
                                         />
@@ -170,7 +156,7 @@ export function EditExpenseDialog({
                                     <FormControl>
                                         <Input
                                             id="expense_name"
-                                            defaultValue={expense_name ?? ""}
+                                            defaultValue={""}
                                             className="col-span-3"
                                             {...field}
                                         />
@@ -190,7 +176,7 @@ export function EditExpenseDialog({
                                     <FormControl>
                                         <PanelSelect
                                             options={options}
-                                            currentSelection={currentSelection}
+                                            currentSelection={currentSelection }
                                             handleOptionChange={(value) => setCurrentSelection(value)}
                                             {...field}
                                         />
@@ -208,7 +194,7 @@ export function EditExpenseDialog({
                                         <FormMessage/>
                                     </FormLabel>
                                     <FormControl>
-                                        <Input id="total_cost" defaultValue={total_cost ?? ""}
+                                        <Input id="total_cost" defaultValue={""}
                                                className="col-span-3" {...field}/>
                                     </FormControl>
                                 </FormItem>
@@ -224,7 +210,7 @@ export function EditExpenseDialog({
                                         <FormMessage/>
                                     </FormLabel>
                                     <FormControl>
-                                        <Input id="split_by" defaultValue={split_by ?? ""}
+                                        <Input id="split_by" defaultValue={""}
                                                className="col-span-3" {...field}/>
                                     </FormControl>
                                 </FormItem>
@@ -240,7 +226,7 @@ export function EditExpenseDialog({
                                         <FormMessage/>
                                     </FormLabel>
                                     <FormControl>
-                                        <Input id="cost" defaultValue={cost ?? ""} className="col-span-3" {...field}/>
+                                        <Input id="cost" defaultValue={""} className="col-span-3" {...field}/>
                                     </FormControl>
                                 </FormItem>
                             )}
@@ -255,13 +241,13 @@ export function EditExpenseDialog({
                                         <FormMessage/>
                                     </FormLabel>
                                     <FormControl>
-                                        <Input id="paid_by" defaultValue={paid_by ?? ""} className="col-span-3" {...field}/>
+                                        <Input id="paid_by" defaultValue={""} className="col-span-3" {...field}/>
                                     </FormControl>
                                 </FormItem>
                             )}
                         />
                         <DialogFooter>
-                            <Button type="submit">Save changes</Button>
+                            <Button type="submit">Add Expense</Button>
                         </DialogFooter>
                     </form>
                 </Form>
